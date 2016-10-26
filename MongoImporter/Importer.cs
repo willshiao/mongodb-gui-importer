@@ -17,7 +17,7 @@ namespace MongoImporter
         private IMongoCollection<BsonDocument> _collection;
         public string InputFile { get; set; }
         public int BatchSize { get; set; } = 100;
-        public ILineSerializer Serializer { get; set; };
+        public ILineSerializer Serializer { get; set; }
 
         public Importer(MongoClient client)
         {
@@ -34,7 +34,7 @@ namespace MongoImporter
             _collection = _db.GetCollection<BsonDocument>(name);
         }
 
-        public async void ReadFromFile()
+        public async Task ReadFromFile()
         {
             using (var sr = new StreamReader(InputFile))
             {
@@ -42,11 +42,14 @@ namespace MongoImporter
                 while (sr.Peek() >= 0)
                 {
                     var documents = new List<BsonDocument>();
-                    var line = await sr.ReadLineAsync();
-                    documents.Add(Serializer.SerializeLine(line));
+                    for (var i = 0; i < BatchSize; ++i)
+                    {
+                        documents.Add(Serializer.SerializeLine(sr.ReadLine()));
+                    }
                     if (insertionTask != null) await insertionTask;
                     insertionTask = _collection.InsertManyAsync(documents);
                 }
+                if (insertionTask != null) await insertionTask;
             }
         }
     }

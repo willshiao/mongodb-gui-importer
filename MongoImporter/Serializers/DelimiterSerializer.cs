@@ -25,6 +25,7 @@ namespace MongoImporter.Serializers
 
             for (var i = 0; i < _fieldNames.Count(); ++i)
             {
+                if (i >= parts.Length) break;
                 doc.Set(_fieldNames.ElementAt(i), parts[i]);
             }
             return doc;
