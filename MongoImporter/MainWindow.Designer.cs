@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(790, 522);
             this.Name = "MainWindow";
             this.Text = "Mongo Importer";
             this.Load += new System.EventHandler(this.MainWindow_Load);
